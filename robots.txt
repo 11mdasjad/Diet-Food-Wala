@@ -1,0 +1,3 @@
+# Preview only. Build with an approved SITE_URL for production robots and sitemap.
+User-agent: *
+Disallow: /
