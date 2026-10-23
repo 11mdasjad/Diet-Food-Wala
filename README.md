@@ -15,7 +15,8 @@ Open **http://127.0.0.1:3000**. Use an HTTP server, rather than opening HTML thr
 ## Pages and features
 
 - Home: food hero, categories, annual plan preview, process, brand introduction, dynamic meal cards, sourced health education, three-column community story section and contact links.
-- Our Meals: ingredient search, category and dietary filters, price sorting, empty state and custom-plan enquiry.
+- Our Menu: 92 catalog products across 13 categories; multi-word search, dietary filters, price/name sorting, shareable category/search links and empty state.
+- Portion selection: 10 pizzas and 3 fries have catalog price variants; cart quantities and WhatsApp enquiry totals preserve each selected variant.
 - Meal Details: one shared catalogue, ingredient and allergen information, invalid-ID fallback.
 - Cart: add/remove, quantities, INR subtotal, localStorage persistence, cross-tab updates, native accessible dialog, WhatsApp enquiry. A cart is never represented as an order.
 - Subscriptions: weekly/monthly/custom enquiry options with explicitly unconfirmed prices, frequency and inclusions.
@@ -23,13 +24,15 @@ Open **http://127.0.0.1:3000**. Use an HTTP server, rather than opening HTML thr
 - Contact: accessible validation, optional email, consent, user-reviewed WhatsApp message. Nothing is sent automatically or saved locally.
 - About, How It Works, Health Blog, FAQ, Privacy, Terms and Refund Policy.
 
-WhatsApp links currently target the supplied primary contact number **+91 7529973199**. Whether that number is WhatsApp-enabled must be confirmed by the owner. The alternate phone number is **+91 9990386825**.
+WhatsApp catalog and enquiry links target **+91 9990386835**, from the supplied catalog URL. Existing call-only contact numbers are retained separately.
 
 ## Edit source
 
 - `scripts/build-pages.py`: shared HTML components and all page copy. Regenerates the root HTML files. Make lasting HTML edits here; a build replaces generated HTML.
 - `css/`: base design, components, responsive breakpoints and reduced-motion rules.
-- `js/data.js`: single source of demonstration meal data.
+- `data/catalog-source.json`: editable catalog source, with 92 unique products, source names, prices, portions and size variants.
+- `scripts/build-catalog.js`: validates the catalog and generates `js/catalog-data.js` during a build. Do not edit the generated module directly.
+- `js/data.js`: catalog categories, dietary labels, WhatsApp contact and pricing helpers.
 - `js/menu.js`, `cart.js`, `contact.js`, `subscriptions.js`, `main.js`, `utils.js`: separate ES modules.
 - `assets/images/`: local food photos. The header and footer use a cleaned transparent version of the supplied Diet Food Wala logo.
 - `tests/`: Node tests; the DOM utility is development-only and is never shipped.
@@ -55,7 +58,17 @@ Manual acceptance checklist at **360, 390, 768, 1024 and 1440 px**:
 7. All three community story cards appear side by side on desktop and stack on mobile.
 8. Tab focus, skip link, browser console and image loading are checked.
 
-Environment verification limits: the homepage rendered in native Chrome and its accessibility tree exposed the expected page, navigation and dynamic product cards. Subsequent computer-use capture failed with a ScreenCaptureKit capture error. Full screenshot review, exact-width browser checks and live browser console inspection could not be completed in this environment. DOM and logic tests are independent of browser rendering and do not substitute for those checks.
+Catalog update verification (23 October 2026): production build, 23 Node/DOM tests and local links across all 13 pages passed. The updated menu rendered in native Chrome with all 92 items and category counts; a desktop screenshot confirmed card layout. Exact-width mobile screenshot checks and browser-console inspection were not completed; responsive layouts are implemented in `css/catalog.css`.
+
+## WhatsApp catalog import
+
+Source: https://wa.me/c/919990386835, read in the WhatsApp desktop app through the end of its All items list. Collection previews were also checked. The 95 source listings contain 92 unique products after consolidating duplicate Chicken Schezwan Fried Rice, Paneer Schezwan Fried Rice and Tandoori Paneer Pizza entries. Their matching prices and the more complete pizza size listing are retained.
+
+Names are cleaned for spelling/capitalization, with original names retained as `sourceName`. Listed prices range from ₹49 to ₹349 before variants; large pizza options reach ₹499. The catalog does not identify the size of the base pizza/fries price, so it is labelled **Listed portion**, not Small/Half. Nutrition figures were not imported as verified nutritional values. Unknown recipes remain unspecified.
+
+Original product photos could be viewed in WhatsApp but were not exported. All 92 menu cards, detail pages and cart thumbnails use dish-family food photographs, including 37 newly generated illustrations. Images use consistent responsive crops and are explicitly labelled serving suggestions; related variants can share a photograph. The menu also links to the original WhatsApp catalog. No original photo import is claimed. Catalog completeness refers to the product inventory and listed prices, not original photographs or verified nutrition.
+
+Updating `data/catalog-source.json` followed by `npm run build` refreshes the browser catalog and `dist/`. The cart uses `dfw-catalog-cart-v2` so old demonstration items are not carried into the real catalog. It stores only item IDs, selected portions and quantities; prices always come from the catalog.
 
 ## Deployment
 
@@ -79,9 +92,9 @@ Do not publish the annual offer as an approved purchasable plan until the writte
 
 ## Business information still required
 
-- Approved logo, actual meal photos, menu, prices, portions, nutrition and allergen/cross-contact information.
+- Original catalog photo files, verified nutrition and full allergen/cross-contact information. Product names, listed prices and supplied portions were imported on 23 October 2026.
 - Legal business identity, registration/licence information where applicable, grievance contact, operating hours and confirmed location pin.
-- Verified WhatsApp-enabled number and any official social accounts.
+- Any official social accounts. The supplied catalog number is configured for WhatsApp enquiries.
 - Weekly/monthly/custom plan prices, duration, meal frequency, inclusions, exclusions and service availability.
 - Actual delivery radius, charge calculation, taxes, collection and service schedules.
 - Annual-plan approved agreement/version, eligibility, dine-in/takeaway conditions, meal counts, missed meals, pauses, holiday rules, cancellation/early exit, deductions, refund procedure and maximum processing timeline.

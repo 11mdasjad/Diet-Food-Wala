@@ -1,9 +1,35 @@
-// Demonstration catalogue only. Owner approval is required before publication.
-export const products = [
- {id:'grilled-chicken-salad',name:'Grilled Chicken Salad',description:'Grilled chicken, fresh greens, avocado & seeds.',price:180,diet:'nonveg',categories:['salads','protein'],image:'chicken-hero',badge:'Signature pick',ingredients:'Chicken, mixed greens, avocado, cucumber, tomatoes and seeds.',allergens:'May contain sesame, egg, dairy or other allergens in dressing. Confirm the recipe.'},
- {id:'chicken-rice-bowl',name:'Chicken Rice Bowl',description:'Chicken, brown rice & colourful steamed vegetables.',price:200,diet:'nonveg',categories:['protein','balanced'],image:'chicken-rice-bowl',badge:'Protein favourite',ingredients:'Chicken, brown rice, broccoli, carrots and seasonal vegetables.',allergens:'Sauces may contain soy, wheat or sesame. Confirm the recipe.'},
- {id:'quinoa-veg-bowl',name:'Quinoa Veg Bowl',description:'Quinoa, mixed vegetables, chickpeas & fresh herbs.',price:160,diet:'veg',categories:['balanced'],image:'quinoa-bowl',badge:'Plant-powered',ingredients:'Quinoa, chickpeas, leafy greens, tomatoes and seasonal vegetables.',allergens:'Dressings may contain sesame or nuts. Confirm the recipe.'},
- {id:'paneer-salad',name:'Paneer Salad',description:'Paneer, crisp greens, cucumber & a light dressing.',price:150,diet:'veg',categories:['salads','protein'],image:'paneer-bowl',badge:'Fresh & colourful',ingredients:'Paneer, mixed greens, cucumber, tomatoes and dressing.',allergens:'Contains milk. Dressing ingredients and cross-contact need confirmation.'}
+import catalogProducts from './catalog-data.js';
+import {productImage} from './product-images.js';
+export const catalog = {url:'https://wa.me/c/919990386835',updated:'23 October 2026',complete:true};
+export const categories = [
+  {id:'all',name:'All items',symbol:'✦'},
+  {id:'veg-salads',name:'Veg salads',symbol:'🥗'},
+  {id:'chicken',name:'Chicken',symbol:'🍗'},
+  {id:'eggs',name:'Egg meals',symbol:'🥚'},
+  {id:'fish',name:'Fish salads',symbol:'🐟'},
+  {id:'specials',name:'Specials',symbol:'✦'},
+  {id:'rice',name:'Rice meal boxes',symbol:'🍱'},
+  {id:'starters',name:'Starters & momos',symbol:'🥟'},
+  {id:'fried-rice',name:'Fried rice',symbol:'🍚'},
+  {id:'pizza',name:'Pizzas',symbol:'🍕'},
+  {id:'burgers',name:'Burgers',symbol:'🍔'},
+  {id:'fries',name:'French fries',symbol:'🍟'},
+  {id:'drinks',name:'Shakes & coffee',symbol:'🥤'},
+  {id:'sandwiches',name:'Sandwiches',symbol:'🥪'},
 ];
+export const categoryById = id => categories.find(category => category.id === id);
+const kitchenNote = 'Ask the kitchen for the full ingredients, dressings, allergens and cross-contact information before ordering.';
+export const products = catalogProducts.map(product => ({
+  ...product,
+  image: productImage(product),
+  description: product.portion || `${product.name} from the Diet Food Wala catalog.`,
+  ingredients: product.portion || 'Full ingredients and serving size are available from the kitchen.',
+  badge: categoryById(product.category).name,
+  allergens: `${/paneer|cheese/i.test(product.name + product.portion) ? 'Contains milk. ' : ''}${/egg|omelet/i.test(product.name + product.portion) ? 'Contains egg. ' : ''}${/fish/i.test(product.name) ? 'Contains fish. ' : ''}${/sesame/i.test(product.name) ? 'Contains sesame. ' : ''}${/soya|tofu/i.test(product.name) ? 'Contains soy. ' : ''}${kitchenNote}`,
+}));
 export const productById = id => products.find(product => product.id === id);
-export const business = {phone:'+917529973199', whatsapp:'917529973199', whatsappVerified:false};
+export const business = {phone:'+917529973199',whatsapp:'919990386835',whatsappVerified:true};
+export const dietLabels = {veg:'Veg',egg:'Contains egg',nonveg:'Non-veg',unspecified:'Ask about ingredients'};
+export function productVariant(product, variantId) { return product.variants?.find(variant => variant.id === variantId) || product.variants?.[0]; }
+export function itemPrice(product, variantId) { return productVariant(product, variantId)?.price ?? product.price; }
+export function itemName(product, variantId) { const variant = productVariant(product, variantId); return `${product.name}${variant ? ` — ${variant.name}` : ''}`; }

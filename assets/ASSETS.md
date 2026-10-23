@@ -31,3 +31,9 @@ Inter is requested from Google Fonts with `display=swap`, with a sans-serif fall
 ## Supplied logo cleanup
 
 `images/diet-food-wala-logo.png`: transparent, closely cropped version of the user-supplied logo. Built-in image generation edit, preserving the green leaves, fork, steam, bowl curves and stacked DIET / FOOD / WALA lettering. Prompt: remove the white background and excess whitespace, preserve original design and colors, clean and sharpen edges, keep a small even safe margin; no new elements, shadows or text. Displayed with `object-fit: contain` so it never stretches.
+
+## Catalog image collection — 23 October 2026
+
+`images/catalog/` contains 37 food photographs generated with the built-in Imagegen tool (no CLI/API fallback). Each has a 960px JPEG and a 480px `-small.jpg` derivative, optimized at JPEG quality 82. The full prompt set and original generated-file locations are recorded in `data/catalog-image-prompts.json`. Only optimized JPEGs ship in this collection.
+
+Subjects cover fish and chicken dishes, salads, eggs, rice, pizza, burgers, fries, momos, starters, sandwiches and drinks. All share soft daylight, ivory surfaces and white crockery. The mapping in `js/product-images.js` assigns these plus the existing paneer and chicken-rice photos to all 92 products. Related menu variants share an illustrative serving image; these are not original WhatsApp product photographs and do not verify ingredients or portion appearance.
